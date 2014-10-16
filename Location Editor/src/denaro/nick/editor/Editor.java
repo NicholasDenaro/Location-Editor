@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +19,8 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JViewport;
@@ -91,26 +94,9 @@ public class Editor extends JFrame implements ChangeListener
 	
 	public void newLocationPanel(LocationPanel panel)
 	{
-		JScrollPane scroll=new JScrollPane();
-		JViewport viewport=new JViewport();
-		viewport.setLayout(new GridBagLayout());
-		GridBagConstraints gbc=new GridBagConstraints();
-		gbc.fill=GridBagConstraints.VERTICAL;
-		gbc.anchor=GridBagConstraints.PAGE_START;
-		gbc.weightx=1;
-		gbc.weighty=1;
-		gbc.gridx=0;
-		gbc.gridy=0;
-		gbc.gridwidth=1;
-		gbc.gridwidth=1;
-		viewport.add(panel,gbc);
-		viewport.setBackground(Color.orange);
-		scroll.setViewport(viewport);
-		viewport.setPreferredSize(viewport.getSize());
-		
 		settings.changeLocationName(panel.getName());
 		
-		locationTabs.add(panel.getName(),scroll);
+		locationTabs.add(panel.getName(),panel);
 	}
 	
 	public Tab getSettingsTab()
@@ -148,8 +134,7 @@ public class Editor extends JFrame implements ChangeListener
 	
 	private LocationPanel getCurrentLocationPanel()
 	{
-		JScrollPane scroll=(JScrollPane)locationTabs.getComponentAt(locationTabs.getSelectedIndex());
-		return (LocationPanel)(scroll.getViewport().getComponent(0));
+		return (LocationPanel)locationTabs.getComponentAt(locationTabs.getSelectedIndex());
 	}
 	
 	public Entity getSelectedEntity()
@@ -203,7 +188,7 @@ public class Editor extends JFrame implements ChangeListener
 			if(entity.id()==0)
 			{
 				//this is the wall! (hopefully)
-				entity.mask(panel.getWalls());
+				entity.mask(new Area(panel.getWalls()));
 			}
 		}
 		JFileChooser chooser=new JFileChooser(".");
@@ -233,7 +218,7 @@ public class Editor extends JFrame implements ChangeListener
 			if(entity.id()==0)
 			{
 				//this is the wall! (hopefully)
-				panel.setWalls(entity.mask());
+				panel.setWalls(new Area(entity.mask()));
 			}
 		}
 		this.newLocationPanel(panel);
