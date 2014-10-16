@@ -246,6 +246,7 @@ public class Editor extends JFrame implements ChangeListener
 	private WallBrowser wallBrowser;
 	private LocationSettings settings;
 	
+	
 	private int locationTabsSelectedIndex=-1;
 	
 	public enum Tab{ENTITY,TILES,WALLS,SETTINGS}
