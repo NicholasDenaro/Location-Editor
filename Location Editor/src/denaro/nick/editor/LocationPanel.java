@@ -104,7 +104,7 @@ public class LocationPanel extends JPanel implements MouseListener, MouseMotionL
 						for(Entity entity:ents.get(index))
 						{
 							if(entity.image()!=null)
-								g.drawImage(entity.image(),(int)entity.x(),(int)entity.y(),null);
+								g.drawImage(entity.image(),(int)entity.x()-entity.sprite().anchor().x,(int)entity.y()-entity.sprite().anchor().y,null);
 							else
 							{
 								g.setColor(Color.black);
